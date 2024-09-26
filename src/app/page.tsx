@@ -41,8 +41,15 @@ export default function Home() {
         canvas.width = desiredWidth;
         canvas.height = desiredHeight;
 
-        // First, draw the video feed, scaled to fit the desired dimensions
-        context.drawImage(videoRef.current, 0, 0, desiredWidth, desiredHeight);
+        // Save the context state
+        context.save();
+
+        // Flip the context horizontally
+        context.scale(-1, 1);
+        context.drawImage(videoRef.current, -desiredWidth, 0, desiredWidth, desiredHeight);
+
+        // Restore the context to its original state
+        context.restore();
 
         // Create a new HTMLImageElement for the frame
         const frame = new window.Image(); // Native Image constructor
@@ -160,6 +167,7 @@ export default function Home() {
                 ref={videoRef}
                 autoPlay
                 className="absolute inset-0 w-full h-full object-cover z-10 p-2.5"
+                style={{ transform: 'scaleX(-1)' }}
               />
               <canvas ref={canvasRef} width={640} height={480}></canvas>
             </div>
