@@ -100,10 +100,11 @@ export default function Home() {
       {/* Middle Frame */}
       <div className="flex items-center w-full">
         <div className="flex flex-col gap-7 w-full ml-44 relative">
+          {/* capture */}
           <div className="flex flex-col w-full group">
             <button
               type="button"
-              className="bg-pink-50 mr-10 hover:bg-white text-pink-500 font-bold py-2 px-6 rounded-tl-2xl rounded-br-2xl w-[13%]"
+              className={`bg-pink-50 mr-10 hover:bg-white ${capturedImage ? ' text-gray-300 pointer-events-none' : 'text-pink-500'} font-bold py-2 px-6 rounded-tl-2xl rounded-br-2xl w-[13%]`}
               onClick={captureImage}
             >
               CAPTURE
@@ -111,10 +112,12 @@ export default function Home() {
             <div className="flex bg-pink-50 group-hover:bg-white w-full p-[0.4px]" />
           </div>
 
+          {/* retake */}
+
           <div className="flex flex-col w-full group">
             <button
               type="button"
-              className="bg-pink-50 mr-10 hover:bg-white text-pink-500 font-bold py-2 px-6 rounded-tl-2xl rounded-br-2xl w-[13%]"
+              className={`bg-pink-50 mr-10 hover:bg-white ${!capturedImage ? ' text-gray-300 pointer-events-none' : 'text-pink-500'} font-bold py-2 px-6 rounded-tl-2xl rounded-br-2xl w-[13%]`}
               onClick={handleRetake}
             >
               RETAKE
@@ -122,10 +125,12 @@ export default function Home() {
             <div className="flex bg-pink-50 group-hover:bg-white w-full p-[0.4px]" />
           </div>
 
+          {/* save */}
+
           <div className="flex flex-col w-full group">
             <button
               type="button"
-              className="bg-pink-50 mr-10 hover:bg-white text-pink-500 font-bold py-2 px-6 rounded-tl-2xl rounded-br-2xl w-[13%]"
+              className={`bg-pink-50 mr-10 hover:bg-white ${!capturedImage ? ' text-gray-300 pointer-events-none ' : 'text-pink-500 '} font-bold py-2 px-6 rounded-tl-2xl rounded-br-2xl w-[13%]`}
               onClick={saveImage}
             >
               SAVE
@@ -135,43 +140,47 @@ export default function Home() {
         </div>
 
         {/* Container for the Frame and Video */}
-        <div className="relative left-[-45%] z-10 max-w-xs w-full sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
+        <div className="relative left-[-45%] p-10 z-10 max-w-xs w-full sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
           {/* Frame Image */}
 
           {/* Webcam Video */}
           {!capturedImage && (
-            <>
-              {' '}
+            <div>
+              {/* Frame Image */}
               <Image
                 src={frameImage}
                 alt="Frame"
-                width={500}
-                height={500}
+                width={400}
+                height={600}
                 className="absolute inset-0 w-full h-full pointer-events-none z-20"
               />
+
+              {/* Video Feed */}
               <video
                 ref={videoRef}
                 autoPlay
                 className="absolute inset-0 w-full h-full object-cover z-10 p-2.5"
-                style={{ objectFit: 'cover' }}
               />
-            </>
+              <canvas ref={canvasRef} width={640} height={480}></canvas>
+            </div>
           )}
 
           {/* Captured Image */}
           {capturedImage && (
-            <Image
-              src={capturedImage}
-              alt="Captured"
-              width={400}
-              height={700}
-              className="absolute inset-0 w-full h-full object-cover z-10"
-              unoptimized
-            />
+            <>
+              <Image
+                src={capturedImage}
+                alt="Captured"
+                width={400}
+                height={600}
+                className="absolute inset-0 w-full h-full object-cover z-30" // Increase z-index for captured image
+                unoptimized
+              />
+              <canvas ref={canvasRef} width={640} height={480}></canvas>
+            </>
           )}
 
           {/* Hidden Canvas for Capturing */}
-          <canvas ref={canvasRef} width={640} height={480}></canvas>
         </div>
       </div>
 
