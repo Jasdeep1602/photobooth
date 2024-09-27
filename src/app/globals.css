@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -24,4 +30,57 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* css */
+
+.maincontainer {
+  min-height: 100vh;
+  display: flex;
+  background-image: url('/bg.jpg');
+  background-size: cover;
+}
+.left-container {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  flex-basis: 70%;
+}
+
+.right-container {
+  background-image: url('/right-img.png');
+  display: flex;
+  background-size: cover;
+  align-items: center;
+  justify-items: center;
+  flex-basis: 30%;
+}
+
+.buttoncontainer {
+  position: absolute;
+  width: 60vw;
+  right: 26vw;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5vw;
+}
+
+.btnstyle {
+  background: rgb(253, 242, 248);
+  color: rgb(236, 72, 153);
+  font-weight: 600;
+  padding-top: 0.8vw;
+  padding-bottom: 0.8vw;
+  padding-right: 0.8vw;
+  padding-left: 0.8vw;
+  width: 10vw;
+  font-size: 1.2vw;
+  border: none;
+  border-top-left-radius: 1.5vw;
+  border-bottom-right-radius: 1.5vw;
+}
+
+.linestyle {
+  background: rgb(253, 242, 248);
+  height: 2px;
 }
