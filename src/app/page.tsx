@@ -12,26 +12,65 @@ export default function Home() {
   const frame = '/frame.png';
 
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [stream, setStream] = useState<MediaStream | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  // const [stream, setStream] = useState<MediaStream | null>(null);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
 
-  const handeClick = () => {
-    console.log('hello');
+  // start cam
+  const startWebcam = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (error) {
+      console.error('Error accessing webcam:', error);
+    }
+  };
+
+  // stop cam
+
+  const stopWebcam = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      const tracks = stream.getTracks();
+      tracks.forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
+    }
+  };
+
+  const handleCapture = () => {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d')?.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageDataUrl = canvas.toDataURL('image/jpeg');
+      setCapturedImage(imageDataUrl);
+    }
+  };
+
+  const handleRetake = () => {
+    setCapturedImage(null);
+    startWebcam();
+  };
+
+  const handleSave = () => {
+    if (capturedImage) {
+      const link = document.createElement('a');
+      link.href = capturedImage;
+      link.download = 'captured_image.jpg';
+      link.click();
+    }
   };
 
   useEffect(() => {
-    // Only set up the video stream once
-    if (!stream) {
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then((mediaStream) => {
-          if (videoRef.current) {
-            videoRef.current.srcObject = mediaStream;
-          }
-          setStream(mediaStream);
-        })
-        .catch((err) => console.error('Error accessing webcam: ', err));
-    }
-  }, [stream]);
+    startWebcam();
+    return () => {
+      stopWebcam();
+    };
+  }, []);
 
   return (
     <div className="maincontainer">
@@ -39,26 +78,37 @@ export default function Home() {
         <div className="buttoncontainer">
           <CustomButton
             text="CAPTURE"
-            handleOnClick={handeClick}
+            handleOnClick={handleCapture}
             className="btnstyle"
             lineClass="linestyle"
           />
           <CustomButton
             text="RETAKE"
-            handleOnClick={handeClick}
+            handleOnClick={handleRetake}
             className="btnstyle"
             lineClass="linestyle"
           />
           <CustomButton
             text="SAVE"
-            handleOnClick={handeClick}
+            handleOnClick={handleSave}
             className="btnstyle"
             lineClass="linestyle"
           />
         </div>
         <div className="fullframe ">
           <div className="cameraclass ">
-            <video ref={videoRef} autoPlay playsInline />
+            {capturedImage ? (
+              <Image
+                width={500}
+                height={500}
+                src={capturedImage}
+                alt="Captured"
+                className="capturedimg"
+              />
+            ) : (
+              <video ref={videoRef} autoPlay playsInline />
+            )}
+            <canvas ref={canvasRef} style={{ display: 'none' }} />
           </div>
           <Image width={500} alt="frame" height={500} src={frame} className="frame" />
         </div>
