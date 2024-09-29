@@ -63,7 +63,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1.5vw;
-  top: 22vw;
+  top: 16vw;
 }
 
 .btnstyle {
@@ -82,22 +82,39 @@ body {
   border-bottom-right-radius: 1.5vw;
 }
 
+.btnstyle-inactive {
+  background: rgb(253, 242, 248);
+  cursor: none;
+  pointer-events: none;
+  color: rgb(188, 187, 187);
+  font-weight: 600;
+  padding-top: 0.8vw;
+  padding-bottom: 0.8vw;
+  padding-right: 0.8vw;
+  padding-left: 0.8vw;
+  width: 10vw;
+  font-size: 1.2vw;
+  border: none;
+  border-top-left-radius: 1.5vw;
+  border-bottom-right-radius: 1.5vw;
+}
+
 .linestyle {
   background: rgb(253, 242, 248);
   height: 2px;
 }
 
 .btnstyle:hover {
-  background: white; /* Change to desired button hover color */
+  background: white;
 }
 
 .btnstyle:hover + .linestyle {
-  background: white; /* Change to desired line hover color */
+  background: white;
 }
 
 .fullframe {
   position: absolute;
-  top: 15vw;
+  top: 12vw;
   left: 35vw;
   z-index: 1;
   width: 24vw;
@@ -116,7 +133,7 @@ body {
   position: relative;
   width: 96%;
   height: 98%;
-  box-shadow: rgba(31, 31, 31, 0.4) -0.1vw 0.3vw 0.5vw;
+  box-shadow: rgba(64, 63, 63, 0.4) 0.2vw 0.5vw 0.5vw;
   background: rgb(244, 105, 90);
   overflow: hidden;
   /* transform: scaleX(-1); */
@@ -139,7 +156,7 @@ video {
 
 .capturedimg {
   position: absolute;
-  transform: scale(1.64, 1.001);
+  transform: scale(1.6, 1);
   top: 0px;
   left: 0px;
   height: 100%;

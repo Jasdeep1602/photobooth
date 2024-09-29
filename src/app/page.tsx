@@ -1,7 +1,6 @@
 'use client';
 
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable @next/next/no-img-element */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable jsx-a11y/media-has-caption */
@@ -9,9 +8,12 @@
 import CustomButton from '@/components/button';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { toast } from 'sonner';
 
 export default function Home() {
   const frameImage = '/frame.png';
+
+  // local states
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,7 +28,7 @@ export default function Home() {
         videoRef.current.srcObject = stream;
       }
     } catch (error) {
-      console.error('Error accessing webcam:', error);
+      toast.error('Webcam failed to load');
     }
   };
 
@@ -49,20 +51,20 @@ export default function Home() {
       const desiredWidth = 450;
       const desiredHeight = 530;
 
-      // for showing in ui
+      if (context) {
+        // Clear the canvas before drawing
+        context.clearRect(0, 0, canvas.width, canvas.height);
 
-      if (videoRef.current && canvasRef.current) {
+        // for showing in ui
+
         const video = videoRef.current;
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         context?.drawImage(video, 0, 0, canvas.width, canvas.height);
         const imageDataUrl = canvas.toDataURL('image/jpeg');
         setUiCapture(imageDataUrl);
-      }
-      // download one
-      if (context) {
-        // Clear the canvas before drawing
-        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        // download one
 
         // Set the canvas size to the desired dimensions
         canvas.width = desiredWidth;
@@ -106,6 +108,7 @@ export default function Home() {
       link.download = 'captured_image.jpg';
       link.click();
     }
+    toast.success('Downloading image');
   };
 
   useEffect(() => {
@@ -122,19 +125,19 @@ export default function Home() {
           <CustomButton
             text="CAPTURE"
             handleOnClick={captureImage}
-            className="btnstyle"
+            className={!capturedImage ? 'btnstyle' : 'btnstyle-inactive'}
             lineClass="linestyle"
           />
           <CustomButton
             text="RETAKE"
             handleOnClick={handleRetake}
-            className="btnstyle"
+            className={capturedImage ? 'btnstyle' : 'btnstyle-inactive'}
             lineClass="linestyle"
           />
           <CustomButton
             text="SAVE"
             handleOnClick={handleSave}
-            className="btnstyle"
+            className={capturedImage ? 'btnstyle' : 'btnstyle-inactive'}
             lineClass="linestyle"
           />
         </div>
@@ -153,7 +156,7 @@ export default function Home() {
             )}
             <canvas ref={canvasRef} style={{ display: 'none' }} />
           </div>
-          <img alt="frame" src={frameImage} className="frame" />
+          <Image width={500} height={500} alt="frame" src={frameImage} className="frame" />
         </div>
       </div>
       <div className="right-container"></div>
