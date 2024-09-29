@@ -9,6 +9,7 @@ import CustomButton from '@/components/button';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { toast } from 'sonner';
+import { HomeIcon } from '@heroicons/react/24/solid';
 
 export default function Home() {
   const frameImage = '/frame.png';
@@ -140,6 +141,10 @@ export default function Home() {
             className={capturedImage ? 'btnstyle' : 'btnstyle-inactive'}
             lineClass="linestyle"
           />
+        </div>
+        <div className="homebutton">
+          <HomeIcon className="w-3 h-3  " />
+          Home
         </div>
         <div className="fullframe ">
           <div className="cameraclass ">

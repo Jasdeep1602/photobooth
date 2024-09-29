@@ -56,6 +56,20 @@ body {
   flex-basis: 30%;
 }
 
+.homebutton {
+  cursor: pointer;
+  position: absolute;
+  font-size: 1vw;
+  font-weight: 500;
+  right: 41.2vw;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+  gap: 0.5vw;
+  top: 10vw;
+}
+
 .buttoncontainer {
   position: absolute;
   width: 60vw;
